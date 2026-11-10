@@ -1,0 +1,928 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Scan4k</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Manrope:wght@400;600;800&family=Press+Start+2P&display=swap">
+<style>
+/* Layout: one dark neon "arcade night" page. Hero = giant wordmark + ghost scene, then schedule and links side by side. Single deliberate dark look. */
+:root {
+  --bg: #0a0620;
+  --panel: #130b36;
+  --panel-2: #1a1048;
+  --line: #3b2a7d;
+  --ink: #f6f1ff;
+  --muted: #b8abe8;
+  --violet: #8b5cf6;
+  --neon: #c4a1ff;
+  --cyan: #22d3ee;
+  --pink: #f472b6;
+  --gold: #fbbf24;
+  --outline: #05020f;
+  --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --pixel: 'Press Start 2P', 'Courier New', monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-block: 20px 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.sky {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(1.6px 1.6px at 8% 14%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 22% 62%, #e9ddff, transparent 60%),
+    radial-gradient(1.8px 1.8px at 35% 8%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 47% 34%, #cdb8ff, transparent 60%),
+    radial-gradient(1.6px 1.6px at 58% 78%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 66% 20%, #e9ddff, transparent 60%),
+    radial-gradient(1.8px 1.8px at 78% 52%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 88% 12%, #cdb8ff, transparent 60%),
+    radial-gradient(1.6px 1.6px at 93% 70%, #fff, transparent 60%),
+    radial-gradient(1.2px 1.2px at 14% 88%, #e9ddff, transparent 60%),
+    radial-gradient(1.4px 1.4px at 72% 92%, #fff, transparent 60%),
+    radial-gradient(60% 45% at 85% 0%, rgba(139, 92, 246, .38), transparent 70%),
+    radial-gradient(50% 40% at 0% 45%, rgba(34, 211, 238, .12), transparent 70%),
+    radial-gradient(60% 40% at 50% 100%, rgba(244, 114, 182, .12), transparent 70%);
+}
+.page { max-width: 1120px; margin: 0 auto; overflow-x: clip; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+
+.px { width: 1em; height: .91em; display: inline-block; flex: none; }
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 8px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-family: var(--pixel); font-size: .8rem; text-decoration: none; color: var(--ink); }
+.brand .px { font-size: 1.7rem; color: var(--ink); filter: drop-shadow(0 0 8px var(--violet)); }
+.nav { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav a { font-weight: 800; font-size: .9rem; text-decoration: none; color: var(--muted); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: rgba(19, 11, 54, .7); transition: color .15s, border-color .15s, background .15s; }
+.nav a:hover { color: var(--ink); border-color: var(--neon); background: var(--panel-2); }
+
+/* hero */
+.hero { display: grid; gap: 32px; padding-top: 28px; align-items: center; }
+@media (min-width: 920px) { .hero { grid-template-columns: 1.08fr .92fr; gap: 48px; padding-top: 40px; } }
+.hero-text { min-width: 0; }
+.tag { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 9px 14px; font-family: var(--pixel); font-size: .6rem; line-height: 1.4; letter-spacing: .04em; text-transform: uppercase; color: var(--cyan); border: 2px solid var(--cyan); border-radius: 6px; background: rgba(34, 211, 238, .08); box-shadow: 0 0 18px rgba(34, 211, 238, .25); }
+.tag .px { font-size: 1.15rem; }
+
+.logo {
+  margin: 0 0 26px;
+  display: inline-block;
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(2.9rem, 12.5vw, 5.4rem);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  color: #fff;
+  transform: skewX(-8deg);
+  transform-origin: left bottom;
+  -webkit-text-stroke: .12em var(--outline);
+  paint-order: stroke fill;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 .09em 0 #5b21b6) drop-shadow(0 0 22px rgba(168, 85, 247, .8));
+  padding-right: .1em;
+}
+.logo b { color: var(--neon); font-weight: 900; }
+
+.hello { margin: 0 0 16px; font-family: var(--display); font-weight: 700; font-size: clamp(1.15rem, 3.8vw, 1.7rem); line-height: 1.3; text-wrap: balance; }
+.about { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 10px; max-width: 58ch; color: var(--muted); font-size: 1.02rem; }
+.about li { padding-left: 14px; border-left: 3px solid var(--violet); }
+.about li:last-child { color: var(--ink); font-weight: 800; border-left-color: var(--pink); }
+
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; font-family: var(--body); font-weight: 800; font-size: .98rem; text-decoration: none; border-radius: 12px; border: 2px solid var(--violet); transition: transform .12s, box-shadow .12s, background .12s; }
+.btn.primary { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; box-shadow: 0 0 24px rgba(139, 92, 246, .55), 0 4px 0 #3b1a94; }
+.btn.primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(139, 92, 246, .8), 0 6px 0 #3b1a94; }
+.btn.ghost { background: rgba(19, 11, 54, .7); color: var(--ink); }
+.btn.ghost:hover { background: var(--panel-2); border-color: var(--neon); transform: translateY(-2px); }
+
+.scene { position: relative; margin: 0; min-width: 0; }
+.scene img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 960 / 637; border-radius: 20px; border: 2px solid var(--violet); box-shadow: 0 0 0 6px rgba(139, 92, 246, .14), 0 0 60px rgba(139, 92, 246, .5), 0 24px 50px rgba(0, 0, 0, .5); background: var(--panel); }
+.deco { position: absolute; width: 44px; height: 40px; pointer-events: none; }
+.deco.a { top: -20px; right: -6px; color: var(--cyan); filter: drop-shadow(0 0 10px var(--cyan)); animation: bob 4.6s ease-in-out infinite; }
+.deco.b { bottom: -18px; left: -6px; color: var(--pink); width: 36px; height: 33px; filter: drop-shadow(0 0 10px var(--pink)); animation: bob 5.4s ease-in-out -2s infinite; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* sections */
+.split { display: grid; gap: 24px; margin-top: 64px; scroll-margin-top: 16px; }
+@media (min-width: 840px) { .split { grid-template-columns: 1.05fr .95fr; gap: 28px; } }
+.panel { min-width: 0; padding: 24px; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 2px solid var(--line); border-radius: 20px; box-shadow: 0 0 40px rgba(91, 33, 182, .18); }
+.panel h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 700; font-size: clamp(1.1rem, 3.4vw, 1.4rem); line-height: 1.25; text-wrap: balance; }
+.note { display: inline-block; margin: 0 0 18px; padding: 5px 10px; font-family: var(--pixel); font-size: .55rem; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); border: 1px dashed var(--gold); border-radius: 6px; }
+
+.sched { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sched li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid transparent; background: rgba(139, 92, 246, .09); }
+.sched .day { font-family: var(--display); font-weight: 700; font-size: .95rem; }
+.sched .lead { flex: 1; min-width: 10px; border-bottom: 2px dotted var(--line); transform: translateY(3px); }
+.sched .time { font-family: var(--pixel); font-size: .85rem; color: var(--neon); text-shadow: 0 0 12px rgba(196, 161, 255, .7); font-variant-numeric: tabular-nums; }
+.sched .now { display: none; padding: 4px 7px; font-family: var(--pixel); font-size: .5rem; line-height: 1; text-transform: uppercase; color: var(--outline); background: var(--cyan); border-radius: 4px; }
+.sched li.is-today { border-color: var(--neon); background: linear-gradient(90deg, rgba(139, 92, 246, .34), rgba(139, 92, 246, .12)); box-shadow: 0 0 22px rgba(139, 92, 246, .4); }
+.sched li.is-today .now { display: inline-block; }
+.closing { margin: 18px 0 0; font-weight: 800; color: var(--ink); }
+
+.tiles { display: grid; gap: 12px; margin-top: 16px; }
+.tile { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; padding: 16px 18px; text-decoration: none; border-radius: 14px; border: 2px solid var(--line); background: rgba(10, 6, 32, .55); transition: transform .12s, border-color .12s, box-shadow .12s; }
+.tile .name { font-family: var(--display); font-weight: 700; font-size: 1rem; }
+.tile .sub { grid-column: 1; color: var(--muted); font-size: .92rem; overflow-wrap: anywhere; }
+.tile .go { grid-row: 1 / span 2; grid-column: 2; font-family: var(--pixel); font-size: 1rem; color: var(--neon); }
+a.tile:hover { transform: translateX(4px); border-color: var(--neon); box-shadow: 0 0 24px rgba(139, 92, 246, .45); }
+.tile.tg { border-color: #4f7df0; }
+.tile.tt { border-color: var(--pink); }
+.tile.tw { border-color: var(--violet); box-shadow: 0 0 18px rgba(139, 92, 246, .35); }
+
+/* games */
+.games { margin-top: 64px; scroll-margin-top: 16px; }
+.games-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 20px; margin-bottom: 18px; }
+.games-head > div { min-width: 0; }
+.games-head h3 { margin: 0 0 4px; font-family: var(--display); font-weight: 700; font-size: clamp(1.1rem, 3.4vw, 1.4rem); line-height: 1.25; text-wrap: balance; }
+.games-sub { margin: 0; color: var(--muted); }
+.games-tools { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn.small { padding: 9px 14px; font-size: .88rem; cursor: pointer; }
+button.btn.ghost { color: var(--ink); }
+.game-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+.game { --c: var(--violet); --glow: rgba(139, 92, 246, .32); min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 20px; border-radius: 18px; border: 2px solid var(--c); background: linear-gradient(180deg, var(--panel-2), var(--panel)); box-shadow: 0 0 28px var(--glow); }
+.game.c1 { --c: var(--cyan); --glow: rgba(34, 211, 238, .26); }
+.game.c2 { --c: var(--pink); --glow: rgba(244, 114, 182, .28); }
+.game-top { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.game-top .px { font-size: 1.5rem; color: var(--c); filter: drop-shadow(0 0 8px var(--c)); }
+.game-tag { font-family: var(--pixel); font-size: .55rem; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--c); overflow-wrap: anywhere; }
+.game h4 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.2rem; line-height: 1.25; overflow-wrap: anywhere; }
+.game p { margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-family: var(--pixel); font-size: .5rem; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.field input, .field textarea { width: 100%; padding: 10px 12px; font: inherit; font-size: .95rem; color: var(--ink); background: rgba(10, 6, 32, .7); border: 1px solid var(--line); border-radius: 10px; }
+.field textarea { resize: vertical; min-height: 84px; }
+.g-status { margin: 12px 0 0; min-height: 1.4em; color: var(--gold); font-weight: 800; }
+
+.g-note { margin: 12px 0 0; color: var(--muted); font-weight: 600; }
+.g-note:empty { display: none; }
+.vote-row { margin-top: auto; display: grid; gap: 8px; padding-top: 8px; }
+.tally { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.pct { font-family: var(--pixel); font-size: 1rem; color: var(--c); font-variant-numeric: tabular-nums; }
+.cnt { color: var(--muted); font-size: .88rem; }
+.bar { height: 10px; border-radius: 999px; background: rgba(139, 92, 246, .18); overflow: hidden; }
+.fill { height: 100%; width: 0; border-radius: 999px; background: var(--c); box-shadow: 0 0 12px var(--glow); transition: width .4s; }
+.btn.vote { justify-content: center; width: 100%; }
+.btn.vote[aria-pressed="true"] { background: var(--c); color: var(--outline); border-color: var(--c); }
+.btn.vote:disabled { opacity: .55; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+
+.today { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 0 0 16px; padding: 16px 20px; border: 2px solid var(--gold); border-radius: 16px; background: rgba(251, 191, 36, .08); box-shadow: 0 0 24px rgba(251, 191, 36, .2); }
+.today .field { flex: 1 1 100%; }
+.today-label { font-family: var(--pixel); font-size: .6rem; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--gold); }
+.today-name { min-width: 0; font-family: var(--display); font-weight: 900; font-size: clamp(1.3rem, 5vw, 2rem); line-height: 1.2; overflow-wrap: anywhere; }
+.today-name.soon { color: var(--muted); font-weight: 700; }
+
+footer { margin-top: 64px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-top: 22px; border-top: 2px dashed var(--line); }
+footer p { margin: 0; }
+.bye { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+.copy { font-family: var(--pixel); font-size: .55rem; color: var(--muted); letter-spacing: .04em; }
+.block { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-left: 8px; vertical-align: middle; font-family: var(--pixel); font-size: .7rem; color: #5a3200; background: var(--gold); border: 2px solid #b45309; border-radius: 4px; box-shadow: 0 0 14px rgba(251, 191, 36, .6); }
+
+@media (max-width: 480px) {
+  .panel { padding: 18px 16px; }
+  .sched li { padding: 11px 12px; gap: 8px; }
+  .sched .day { font-size: .85rem; }
+  .sched .time { font-size: .75rem; }
+  .deco.a { right: 4px; }
+  .deco.b { left: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .deco { animation: none !important; }
+  .btn, .tile, .nav a { transition: none; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ghost" viewBox="0 0 11 10">
+    <g fill="currentColor" shape-rendering="crispEdges">
+      <rect x="3" y="0" width="5" height="1"/>
+      <rect x="1" y="1" width="9" height="1"/>
+      <rect x="0" y="2" width="11" height="7"/>
+      <rect x="0" y="9" width="3" height="1"/>
+      <rect x="4" y="9" width="3" height="1"/>
+      <rect x="8" y="9" width="3" height="1"/>
+    </g>
+    <g fill="#1a0f4a" shape-rendering="crispEdges">
+      <rect x="2" y="3" width="2" height="3"/>
+      <rect x="7" y="3" width="2" height="3"/>
+      <rect x="4" y="7" width="3" height="1"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="sky"></div>
+<div class="page">
+  <header class="top">
+    <a class="brand" href="#top" aria-label="Scan4k, наверх">
+      <svg class="px" aria-hidden="true"><use href="#ghost"/></svg>
+      <span>SCAN4K</span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#games">Игры</a>
+      <a href="#schedule">Расписание</a>
+      <a href="#links">Где меня найти</a>
+    </nav>
+    <a class="live-badge" id="live-badge" href="https://twitch.tv/scan4k" target="_blank" rel="noopener" hidden><span class="live-dot" aria-hidden="true"></span>Сейчас в эфире</a>
+    <style>
+      .win-badge { margin-left: auto; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--gold); background: rgba(251, 191, 36, .15); color: var(--gold); font-weight: 800; font-size: .75rem; white-space: nowrap; }
+    .game.lead { outline: 2px solid var(--gold); outline-offset: 2px; box-shadow: 0 0 26px rgba(251, 191, 36, .35); }
+    .live-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--pink); background: rgba(244, 114, 182, .16); color: var(--ink); font-weight: 800; font-size: .85rem; text-decoration: none; box-shadow: 0 0 18px rgba(244, 114, 182, .4); }
+      .live-badge:hover { background: rgba(244, 114, 182, .28); }
+      .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #ff3b6b; box-shadow: 0 0 10px #ff3b6b; animation: live-pulse 1.2s ease-in-out infinite; }
+      @keyframes live-pulse { 50% { opacity: .35; transform: scale(.8); } }
+      @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+    </style>
+  </header>
+
+  <style>
+    .side { position: fixed; right: calc(8px + env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%); z-index: 50; display: flex; flex-direction: column; gap: 8px; }
+    .side a { display: flex; align-items: center; justify-content: center; gap: 8px; width: 40px; height: 40px; box-sizing: border-box; border-radius: 999px; border: 1px solid var(--line); background: rgba(19, 11, 54, .9); color: var(--muted); text-decoration: none; font-weight: 800; font-size: .85rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: color .15s, border-color .15s, background .15s; }
+    .side .ico { font-size: 1.1rem; line-height: 1; }
+    .side .lbl { display: none; white-space: nowrap; }
+    .side a:hover, .side a:focus-visible, .side a.is-active { color: var(--ink); border-color: var(--neon); background: var(--panel-2); }
+    @media (min-width: 700px) { .side { right: calc(14px + env(safe-area-inset-right, 0px)); } .side a { width: 44px; height: 44px; } }
+    @media (min-width: 1400px) { .side a { width: auto; padding: 0 16px; justify-content: flex-start; } .side .lbl { display: inline; } }
+    @media (prefers-reduced-motion: reduce) { .side a { transition: none; } }
+  </style>
+  <nav class="side" id="side-nav" aria-label="Быстрый переход">
+    <a href="#games" title="Игры" aria-label="Игры"><span class="ico" aria-hidden="true">🎮</span><span class="lbl">Игры</span></a>
+    <a href="#schedule" title="Расписание" aria-label="Расписание"><span class="ico" aria-hidden="true">🗓</span><span class="lbl">Расписание</span></a>
+    <a href="#links" title="Где меня найти" aria-label="Где меня найти"><span class="ico" aria-hidden="true">💜</span><span class="lbl">Где меня найти</span></a>
+  </nav>
+  <script>
+  (function () {
+    try {
+      var links = document.querySelectorAll('#side-nav a');
+      var map = {};
+      links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+      if (!('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            links.forEach(function (a) { a.classList.remove('is-active'); });
+            map[e.target.id].classList.add('is-active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -50% 0px' });
+      Object.keys(map).forEach(function (id) {
+        var t = document.getElementById(id);
+        if (t) io.observe(t);
+      });
+    } catch (e) {}
+  })();
+  </script>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="tag"><svg class="px" aria-hidden="true"><use href="#ghost"/></svg>Начинающий стример</p>
+        <h1 class="logo" aria-label="Scan4k">Scan<b>4</b>k</h1>
+        <h2 class="hello">всем сап 👻 Добро пожаловать на мой канал!</h2>
+        <ul class="about">
+          <li>🎮 Я начинающий стример, который только начинает свой путь!</li>
+          <li>🔥 Здесь будут новости о стримах, интересные моменты и немного моей жизни.</li>
+          <li>💜 Чаще всего стримлю на <a href="https://twitch.tv/scan4k" target="_blank" rel="noopener" style="color:var(--neon);font-weight:800">Twitch</a>.</li>
+          <li>🚀 Подписывайся и поддержи меня на старте! Впереди много всего интересного!</li>
+        </ul>
+        <div class="cta">
+          <a class="btn primary" href="https://twitch.tv/scan4k" target="_blank" rel="noopener">Смотреть на Twitch ↗</a>
+          <a class="btn ghost" href="https://t.me/scan4kofficial" target="_blank" rel="noopener">Telegram-канал ↗</a>
+          <a class="btn ghost" href="https://www.tiktok.com/@scan4k" target="_blank" rel="noopener">TikTok ↗</a>
+        </div>
+      </div>
+
+      <figure class="scene">
+        <img src="scene.webp" width="960" height="637" alt="Белый призрак-стример в наушниках с микрофоном сидит за клавиатурой, рядом два монитора, геймпад и кружка с призраком">
+        <svg class="deco a" aria-hidden="true"><use href="#ghost"/></svg>
+        <svg class="deco b" aria-hidden="true"><use href="#ghost"/></svg>
+      </figure>
+    </section>
+
+    <section class="games" id="games" aria-labelledby="games-title">
+      <div class="games-head">
+        <div>
+          <h3 id="games-title">Три игры на выбор</h3>
+          <p class="games-sub">Голосуй за игру на ближайший стрим. Список игр меняю только я.</p>
+        </div>
+        <div class="games-tools" id="games-tools" hidden>
+          <button class="btn ghost small" id="g-edit" type="button">Изменить игры</button>
+          <button class="btn ghost small" id="g-winner" type="button">👑 Победителя на сегодня</button>
+          <button class="btn ghost small" id="g-reset" type="button">Сбросить голоса</button>
+          <button class="btn primary small" id="g-save" type="button" hidden>Сохранить</button>
+          <button class="btn ghost small" id="g-cancel" type="button" hidden>Отмена</button>
+        </div>
+      </div>
+      <div class="today" id="today"></div>
+      <div class="game-grid" id="game-grid"></div>
+      <p class="g-note" id="v-note" role="status"></p>
+      <p class="g-status" id="g-status" role="status"></p>
+      <div id="g-login-wrap" style="margin-top:14px" hidden><button class="btn ghost small" id="g-login" type="button">Вход для владельца</button></div>
+      <script type="application/json" id="games-data">{"ver":3,"today":"","games":[{"name":"Counter-Strike 2","tag":"Шутер","text":"Командные раунды, клатчи и разборы моментов."},{"name":"Minecraft","tag":"Песочница","text":"Строим, выживаем и придумываем новые проекты."},{"name":"Valorant","tag":"Тактический шутер","text":"Рейтинговые матчи и тренировка прицела."}]}</script>
+    </section>
+
+    <section class="split" id="schedule">
+      <div class="panel">
+        <h3>🎮 Расписание стримов на Twitch 💜</h3>
+        <span class="note">Временное расписание · время МСК</span>
+        <style>
+          .countdown { display: grid; gap: 4px; margin: 0 0 18px; padding: 14px 16px; border-radius: 14px; border: 2px solid var(--neon); background: rgba(139, 92, 246, .14); box-shadow: 0 0 28px rgba(139, 92, 246, .28); }
+          .cd-label { font-weight: 800; font-size: .9rem; color: var(--muted); }
+          .cd-time { font-family: var(--display); font-weight: 900; font-size: clamp(1.3rem, 5.5vw, 1.9rem); line-height: 1.2; color: var(--ink); text-shadow: 0 0 14px rgba(196, 161, 255, .7); font-variant-numeric: tabular-nums; }
+          .cd-sub { font-size: .85rem; color: var(--neon); font-weight: 600; }
+          .countdown.live { border-color: var(--pink); background: rgba(244, 114, 182, .14); box-shadow: 0 0 28px rgba(244, 114, 182, .35); }
+          .countdown.live .cd-time { font-size: clamp(1.1rem, 4.5vw, 1.5rem); }
+          .countdown a { color: var(--neon); font-weight: 800; }
+        </style>
+        <div class="countdown" id="countdown" role="timer" aria-live="off" hidden>
+          <span class="cd-label" id="cd-label"></span>
+          <span class="cd-time" id="cd-time"></span>
+          <span class="cd-sub" id="cd-sub"></span>
+        </div>
+        <ul class="sched" id="sched">
+          <li data-day="1"><span class="day">Понедельник</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="2"><span class="day">Вторник</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="3"><span class="day">Среда</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="4"><span class="day">Четверг</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="5"><span class="day">Пятница</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="6"><span class="day">Суббота</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+          <li data-day="0"><span class="day">Воскресенье</span><span class="lead"></span><span class="now">сегодня</span><span class="time">19:00</span></li>
+        </ul>
+        <script>
+        (function () {
+          var box = document.getElementById('countdown');
+          var label = document.getElementById('cd-label');
+          var timeEl = document.getElementById('cd-time');
+          var sub = document.getElementById('cd-sub');
+          var rows = document.querySelectorAll('#sched li[data-day]');
+          var MSK = 3 * 3600 * 1000;       // Москва = UTC+3, без перехода на летнее время
+          var LIVE_MS = 3 * 3600 * 1000;   // сколько часов после начала считаем, что стрим идёт
+          var DAYS = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'];
+          var DAYS_NOM = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+          var times = {};
+          function readTimes() {
+            times = {};
+            rows.forEach(function (li) {
+              var t = li.querySelector('.time');
+              var m = t && /(\d{1,2}):(\d{2})/.exec(t.textContent);
+              if (m) times[li.getAttribute('data-day')] = [+m[1], +m[2]];
+            });
+          }
+
+          function pad(n) { return (n < 10 ? '0' : '') + n; }
+          function next(now) {
+            var msk = new Date(now + MSK);
+            var y = msk.getUTCFullYear(), mo = msk.getUTCMonth(), d = msk.getUTCDate(), wd = msk.getUTCDay();
+            for (var i = 0; i < 8; i++) {
+              var dow = (wd + i) % 7;
+              var tm = times[dow];
+              if (!tm) continue;
+              var start = Date.UTC(y, mo, d + i, tm[0], tm[1]) - MSK;
+                if (start > now) return { live: false, start: start, dow: dow, tm: tm, i: i };
+            }
+            return null;
+          }
+          function tick() {
+            readTimes();
+            var now = Date.now();
+            var n = document.documentElement.getAttribute('data-live') === '1' ? { live: true, tm: [0, 0] } : next(now);
+            if (!n) { box.hidden = true; return; }
+            box.hidden = false;
+            var at = pad(n.tm[0]) + ':' + pad(n.tm[1]);
+            if (n.live) {
+              box.className = 'countdown live';
+              label.textContent = '';
+              timeEl.textContent = 'Сейчас в эфире 🔴';
+              sub.textContent = '';
+              var a = document.createElement('a');
+              a.href = 'https://twitch.tv/scan4k';
+              a.target = '_blank';
+              a.rel = 'noopener';
+              a.textContent = 'Заходи на Twitch ↗';
+              sub.appendChild(a);
+              return;
+            }
+            box.className = 'countdown';
+            var diff = Math.max(0, Math.floor((n.start - now) / 1000));
+            var dd = Math.floor(diff / 86400);
+            var hh = Math.floor(diff % 86400 / 3600);
+            var mm = Math.floor(diff % 3600 / 60);
+            var ss = diff % 60;
+            var txt = (dd ? dd + ' д ' : '') + (dd || hh ? hh + ' ч ' : '') + pad(mm) + ' мин ' + pad(ss) + ' с';
+            label.textContent = 'До следующего стрима';
+            timeEl.textContent = txt;
+            var when = n.i === 0 ? 'Сегодня' : (n.i === 1 ? 'Завтра' : 'В ' + DAYS[n.dow]);
+            sub.textContent = when + ' в ' + at + ' МСК';
+          }
+          tick();
+          setInterval(tick, 1000);
+          document.addEventListener('livechange', tick);
+        })();
+        </script>
+        <style>
+          .sched-tools { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 0; }
+          .sched .time.off { color: var(--muted); text-shadow: none; font-size: .7rem; }
+          .sched.editing li { flex-wrap: wrap; }
+          .s-inputs { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+          .s-inputs input[type="time"] { padding: 6px 8px; font-family: var(--pixel); font-size: .75rem; color: var(--ink); background: rgba(10, 6, 32, .7); border: 1px solid var(--line); border-radius: 8px; color-scheme: dark; }
+          .s-inputs input[type="time"]:disabled { opacity: .4; }
+          .s-inputs label { display: flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 600; color: var(--muted); }
+        </style>
+        <div class="sched-tools" id="sched-tools" hidden>
+          <button class="btn ghost small" id="s-live" type="button">🔴 Начать эфир</button>
+          <button class="btn ghost small" id="s-edit" type="button">Изменить время</button>
+          <button class="btn primary small" id="s-save" type="button" hidden>Сохранить</button>
+          <button class="btn ghost small" id="s-cancel" type="button" hidden>Отмена</button>
+        </div>
+        <p class="g-status" id="s-status" role="status"></p>
+        <p class="closing">💜 Жду вас на стримах! 🎧</p>
+      </div>
+
+      <div class="panel" id="links">
+        <h3>Где меня найти</h3>
+        <div class="tiles">
+          <a class="tile tw" href="https://twitch.tv/scan4k" target="_blank" rel="noopener">
+            <span class="name">Twitch</span>
+            <span class="sub">twitch.tv/scan4k · главная площадка, здесь идут стримы</span>
+            <span class="go">↗</span>
+          </a>
+          <a class="tile tg" href="https://t.me/scan4kofficial" target="_blank" rel="noopener">
+            <span class="name">Telegram-канал</span>
+            <span class="sub">t.me/scan4kofficial · новости о стримах</span>
+            <span class="go">↗</span>
+          </a>
+          <a class="tile tt" href="https://www.tiktok.com/@scan4k" target="_blank" rel="noopener">
+            <span class="name">TikTok</span>
+            <span class="sub">@scan4k · интересные моменты</span>
+            <span class="go">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="bye">Увидимся на стриме<span class="block" aria-hidden="true">?</span></p>
+    <p class="copy">SCAN4K · 2026</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  try {
+    var d = new Date().getDay();
+    var row = document.querySelector('#sched li[data-day="' + d + '"]');
+    if (row) row.classList.add('is-today');
+  } catch (e) {}
+})();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<script>
+(function () {
+  var dataEl = document.getElementById('games-data');
+  var grid = document.getElementById('game-grid');
+  var tools = document.getElementById('games-tools');
+  var bEdit = document.getElementById('g-edit');
+  var bSave = document.getElementById('g-save');
+  var bCancel = document.getElementById('g-cancel');
+  var bReset = document.getElementById('g-reset');
+  var bWin = document.getElementById('g-winner');
+  var winIdx = -1;
+  var statusEl = document.getElementById('g-status');
+  var note = document.getElementById('v-note');
+
+  var state = { ver: 1, games: [] };
+  try {
+    var parsed = JSON.parse(dataEl.textContent);
+    if (parsed && parsed.games) state = parsed;
+  } catch (e) {}
+
+  var editing = false;
+  var api = null;
+  var db = null;
+  var uid = null;
+  var canVote = false;
+  var counts = state.games.map(function () { return 0; });
+  var myVote = -1;
+  var resetArmed = false;
+  var resetTimer = null;
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  function plural(n) {
+    var m = n % 100, k = n % 10;
+    if (m > 10 && m < 20) return 'голосов';
+    if (k === 1) return 'голос';
+    if (k >= 2 && k <= 4) return 'голоса';
+    return 'голосов';
+  }
+  // Largest-remainder rounding so the three shares always add up to 100.
+  function percents(c) {
+    var total = c.reduce(function (a, b) { return a + b; }, 0);
+    if (!total) return c.map(function () { return 0; });
+    var raw = c.map(function (x) { return x * 100 / total; });
+    var out = raw.map(Math.floor);
+    var left = 100 - out.reduce(function (a, b) { return a + b; }, 0);
+    raw.map(function (x, i) { return { i: i, r: x - Math.floor(x) }; })
+      .sort(function (a, b) { return b.r - a.r; })
+      .slice(0, left)
+      .forEach(function (o) { out[o.i]++; });
+    return out;
+  }
+  function field(i, key, label, value, max, multi) {
+    var wrap = el('div', 'field');
+    var id = 'g' + i + '-' + key;
+    var lab = el('label', null, label);
+    lab.htmlFor = id;
+    var inp = el(multi ? 'textarea' : 'input');
+    inp.id = id;
+    if (!multi) inp.type = 'text';
+    inp.maxLength = max;
+    inp.value = value;
+    wrap.appendChild(lab);
+    wrap.appendChild(inp);
+    return wrap;
+  }
+  function renderToday() {
+    var t = document.getElementById('today');
+    t.textContent = '';
+    if (editing) {
+      t.appendChild(field('t', 'name', 'Сегодня играем', state.today || '', 60, false));
+    } else {
+      t.appendChild(el('span', 'today-label', 'Сегодня на стриме'));
+      t.appendChild(el('span', 'today-name' + (state.today ? '' : ' soon'), state.today || 'Скоро объявлю'));
+    }
+  }
+  function render() {
+    renderToday();
+    grid.textContent = '';
+    var pcts = percents(counts);
+    var maxC = Math.max.apply(null, counts.concat([0]));
+    var tied = counts.filter(function (c) { return c === maxC; }).length;
+    winIdx = maxC > 0 && tied === 1 ? counts.indexOf(maxC) : -1;
+    state.games.forEach(function (g, i) {
+      var card = el('article', 'game c' + i);
+      if (editing) {
+        card.appendChild(field(i, 'name', 'Название', g.name, 40, false));
+        card.appendChild(field(i, 'tag', 'Жанр', g.tag, 24, false));
+        card.appendChild(field(i, 'text', 'Описание', g.text, 140, true));
+      } else {
+        var top = el('div', 'game-top');
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'px');
+        svg.setAttribute('aria-hidden', 'true');
+        var use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', '#ghost');
+        svg.appendChild(use);
+        top.appendChild(svg);
+        top.appendChild(el('span', 'game-tag', g.tag));
+        if (maxC > 0 && counts[i] === maxC) {
+          card.classList.add('lead');
+          top.appendChild(el('span', 'win-badge', tied === 1 ? '👑 Побеждает' : '⚖ Ничья'));
+        }
+        card.appendChild(top);
+        card.appendChild(el('h4', null, g.name));
+        card.appendChild(el('p', null, g.text));
+
+        var row = el('div', 'vote-row');
+        var tally = el('div', 'tally');
+        tally.appendChild(el('span', 'pct', pcts[i] + '%'));
+        tally.appendChild(el('span', 'cnt', counts[i] + ' ' + plural(counts[i])));
+        var bar = el('div', 'bar');
+        bar.setAttribute('role', 'img');
+        bar.setAttribute('aria-label', g.name + ': ' + pcts[i] + '%');
+        var fill = el('div', 'fill');
+        fill.style.width = pcts[i] + '%';
+        bar.appendChild(fill);
+        var btn = el('button', 'btn ghost small vote', myVote === i ? 'Твой выбор' : 'Выбрать');
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', myVote === i ? 'true' : 'false');
+        btn.disabled = !canVote;
+        btn.addEventListener('click', function () { vote(i); });
+        row.appendChild(tally);
+        row.appendChild(bar);
+        row.appendChild(btn);
+        card.appendChild(row);
+      }
+      grid.appendChild(card);
+    });
+    bEdit.hidden = editing;
+    bReset.hidden = editing;
+    bWin.hidden = editing;
+    bWin.disabled = winIdx < 0;
+    bSave.hidden = !editing;
+    bCancel.hidden = !editing;
+  }
+  function say(t) { statusEl.textContent = t || ''; }
+  function val(id) { var n = document.getElementById(id); return n ? n.value.trim() : ''; }
+
+  // ====== НАСТРОЙКИ: вставь свои значения из Firebase ======
+  var FIREBASE_CONFIG = {
+    apiKey: 'PASTE_API_KEY',
+    authDomain: 'PASTE_AUTH_DOMAIN',
+    projectId: 'PASTE_PROJECT_ID',
+    appId: 'PASTE_APP_ID'
+  };
+  var OWNER_EMAIL = 'PASTE_YOUR_GMAIL@gmail.com';
+  // ==========================================================
+
+  var auth = null;
+  var allVotes = [];
+  var isOwner = false;
+  var loginBtn = document.getElementById('g-login');
+  var loginWrap = document.getElementById('g-login-wrap');
+  // Кнопка входа скрыта от всех. Чтобы её увидеть, открой сайт с #owner в конце адреса.
+  function syncLogin() { loginWrap.hidden = !(location.hash === '#owner' || isOwner); }
+  window.addEventListener('hashchange', syncLogin);
+  syncLogin();
+
+  function recount() {
+    var cnt = state.games.map(function () { return 0; });
+    var mine = -1;
+    allVotes.forEach(function (v) {
+      var d = v.data;
+      if (!d || d.ver !== state.ver || typeof d.g !== 'number' || d.g < 0 || d.g >= cnt.length) return;
+      cnt[d.g]++;
+      if (v.id === uid) mine = d.g;
+    });
+    counts = cnt;
+    myVote = mine;
+  }
+
+  // ====== Метка «Сейчас в эфире» ======
+  var sLive = document.getElementById('s-live');
+  var liveBadge = document.getElementById('live-badge');
+  var LIVE_TTL = 12 * 3600 * 1000;   // если забыл выключить, метка сама погаснет через 12 часов
+  state.live = typeof state.live === 'number' ? state.live : 0;
+  function isLive() { return state.live > 0 && Date.now() - state.live < LIVE_TTL; }
+  function renderLive() {
+    var on = isLive();
+    document.documentElement.setAttribute('data-live', on ? '1' : '0');
+    liveBadge.hidden = !on;
+    document.dispatchEvent(new Event('livechange'));
+    sLive.textContent = on ? '⏹ Закончить эфир' : '🔴 Начать эфир';
+  }
+  renderLive();
+  setInterval(renderLive, 60000);
+
+  // ====== Расписание стримов ======
+  var schedEl = document.getElementById('sched');
+  var schedTools = document.getElementById('sched-tools');
+  var sEdit = document.getElementById('s-edit');
+  var sSave = document.getElementById('s-save');
+  var sCancel = document.getElementById('s-cancel');
+  var sStatus = document.getElementById('s-status');
+  var schedEditing = false;
+  var SCHED_RE = /^([01]?\d|2[0-3]):[0-5]\d$/;
+
+  function sSay(t) { sStatus.textContent = t || ''; }
+  function domSched() {
+    var o = {};
+    document.querySelectorAll('#sched li[data-day]').forEach(function (li) {
+      var t = li.querySelector('.time');
+      var m = t && /(\d{1,2}):(\d{2})/.exec(t.textContent);
+      o[li.getAttribute('data-day')] = m ? ('0' + m[1]).slice(-2) + ':' + m[2] : '';
+    });
+    return o;
+  }
+  function cleanSched(o) {
+    var out = {};
+    for (var d = 0; d < 7; d++) {
+      var v = o && typeof o[d] === 'string' ? o[d] : '';
+      out[d] = SCHED_RE.test(v) ? v : '';
+    }
+    return out;
+  }
+  state.sched = cleanSched(state.sched || domSched());
+
+  function renderSched() {
+    schedEl.classList.toggle('editing', schedEditing);
+    schedEl.querySelectorAll('li[data-day]').forEach(function (li) {
+      var day = li.getAttribute('data-day');
+      var t = li.querySelector('.time');
+      var v = state.sched[day] || '';
+      t.textContent = v || 'выходной';
+      t.classList.toggle('off', !v);
+      t.hidden = schedEditing;
+      var old = li.querySelector('.s-inputs');
+      if (old) old.remove();
+      if (schedEditing) {
+        var box = el('span', 's-inputs');
+        var inp = document.createElement('input');
+        inp.type = 'time';
+        inp.id = 's-time-' + day;
+        inp.value = v;
+        inp.disabled = !v;
+        inp.setAttribute('aria-label', 'Время стрима: ' + li.querySelector('.day').textContent);
+        var lab = el('label');
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.id = 's-off-' + day;
+        cb.checked = !v;
+        cb.addEventListener('change', function () {
+          inp.disabled = cb.checked;
+          if (!cb.checked && !inp.value) inp.value = '19:00';
+        });
+        lab.appendChild(cb);
+        lab.appendChild(document.createTextNode(' выходной'));
+        box.appendChild(inp);
+        box.appendChild(lab);
+        li.appendChild(box);
+      }
+    });
+    sEdit.hidden = schedEditing;
+    sSave.hidden = !schedEditing;
+    sCancel.hidden = !schedEditing;
+    sLive.hidden = schedEditing;
+  }
+  function collectSched() {
+    var o = {};
+    for (var d = 0; d < 7; d++) {
+      var off = document.getElementById('s-off-' + d);
+      var tm = document.getElementById('s-time-' + d);
+      var v = off && off.checked ? '' : ((tm && tm.value) || state.sched[d] || '');
+      o[d] = SCHED_RE.test(v) ? v : '';
+    }
+    return o;
+  }
+  sEdit.addEventListener('click', function () { schedEditing = true; sSay(''); renderSched(); });
+  sCancel.addEventListener('click', function () { schedEditing = false; sSay(''); renderSched(); });
+  renderSched();
+
+  function vote(i) {
+    if (!db || !uid || myVote === i) return;
+    note.textContent = '';
+    db.doc('votes/' + uid).set({ g: i, ver: state.ver }).catch(function () {
+      note.textContent = 'Не удалось проголосовать. Попробуй ещё раз.';
+    });
+  }
+
+  function collect() {
+    return state.games.map(function (g, i) {
+      return {
+        name: val('g' + i + '-name') || g.name,
+        tag: val('g' + i + '-tag') || g.tag,
+        text: val('g' + i + '-text') || g.text
+      };
+    });
+  }
+
+  function saveConfig(next, okText, sayFn, btn) {
+    sayFn = sayFn || say;
+    btn = btn || bSave;
+    sayFn('Сохраняю…');
+    return db.doc('config/games').set(next).then(function () {
+      state = next;
+      editing = false;
+      schedEditing = false;
+      recount();
+      render();
+      renderSched();
+      renderLive();
+      sayFn(okText);
+    }).catch(function (e) {
+      sayFn('Не удалось сохранить (' + (e && e.code ? e.code : 'unknown') + ').');
+    }).then(function () { btn.disabled = false; });
+  }
+
+  bEdit.addEventListener('click', function () { editing = true; say(''); render(); });
+  bCancel.addEventListener('click', function () { editing = false; say(''); render(); });
+  bSave.addEventListener('click', function () {
+    if (!db || !isOwner) return;
+    var next = collect();
+    var changed = next.some(function (g, i) { return g.name !== state.games[i].name; });
+    bSave.disabled = true;
+    saveConfig({ ver: state.ver + (changed ? 1 : 0), today: val('gt-name'), games: next, sched: state.sched, live: state.live }, 'Сохранено ✓');
+  });
+  bReset.addEventListener('click', function () {
+    if (!db || !isOwner) return;
+    if (!resetArmed) {
+      resetArmed = true;
+      bReset.textContent = 'Точно сбросить?';
+      resetTimer = setTimeout(function () { resetArmed = false; bReset.textContent = 'Сбросить голоса'; }, 4000);
+      return;
+    }
+    clearTimeout(resetTimer);
+    resetArmed = false;
+    bReset.textContent = 'Сбросить голоса';
+    saveConfig({ ver: state.ver + 1, today: state.today || '', games: state.games, sched: state.sched, live: state.live }, 'Голоса сброшены ✓');
+  });
+
+  sSave.addEventListener('click', function () {
+    if (!db || !isOwner) return;
+    sSave.disabled = true;
+    saveConfig({ ver: state.ver, today: state.today || '', games: state.games, sched: collectSched(), live: state.live }, 'Сохранено ✓', sSay, sSave);
+  });
+
+  bWin.addEventListener('click', function () {
+    if (!db || !isOwner || winIdx < 0) return;
+    bWin.disabled = true;
+    saveConfig({ ver: state.ver, today: state.games[winIdx].name, games: state.games, sched: state.sched, live: state.live },
+      'Победитель записан в «Сегодня на стриме» ✓', say, bWin);
+  });
+  sLive.addEventListener('click', function () {
+    if (!db || !isOwner) return;
+    var turnOn = !isLive();
+    sLive.disabled = true;
+    saveConfig({ ver: state.ver, today: state.today || '', games: state.games, sched: state.sched, live: turnOn ? Date.now() : 0 },
+      turnOn ? 'Метка «В эфире» включена ✓' : 'Эфир закончен ✓', sSay, sLive);
+  });
+
+  render();
+
+  var configured = window.firebase && FIREBASE_CONFIG.apiKey.indexOf('PASTE_') !== 0;
+  if (!configured) {
+    note.textContent = 'Голосование ещё не подключено (нужны ключи Firebase).';
+    return;
+  }
+
+  firebase.initializeApp(FIREBASE_CONFIG);
+  auth = firebase.auth();
+  db = firebase.firestore();
+
+  loginBtn.addEventListener('click', function () {
+    if (auth.currentUser && !auth.currentUser.isAnonymous) { auth.signOut(); return; }
+    auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(function (e) {
+      say('Не удалось войти (' + (e && e.code ? e.code : 'unknown') + ').');
+    });
+  });
+
+  auth.onAuthStateChanged(function (user) {
+    if (!user) {
+      auth.signInAnonymously().catch(function (e) {
+        note.textContent = 'Голосование недоступно (' + (e && e.code ? e.code : 'unknown') + ').';
+      });
+      return;
+    }
+    uid = user.uid;
+    canVote = true;
+    isOwner = !user.isAnonymous && !!user.email &&
+      user.email.toLowerCase() === OWNER_EMAIL.toLowerCase();
+    tools.hidden = !isOwner;
+    schedTools.hidden = !isOwner;
+    loginBtn.textContent = user.isAnonymous ? 'Вход для владельца' : 'Выйти';
+    syncLogin();
+    recount();
+    if (!editing) render();
+  });
+
+  // список игр, который сохранил владелец
+  db.doc('config/games').onSnapshot(function (snap) {
+    if (!snap.exists) return;
+    var d = snap.data();
+    if (!d || typeof d.ver !== 'number' || !Array.isArray(d.games) || d.games.length !== state.games.length) return;
+    state = {
+      ver: d.ver,
+      today: typeof d.today === 'string' ? d.today : '',
+      games: d.games.map(function (g) {
+        return { name: String(g.name || ''), tag: String(g.tag || ''), text: String(g.text || '') };
+      }),
+      sched: d.sched ? cleanSched(d.sched) : state.sched,
+      live: typeof d.live === 'number' ? d.live : 0
+    };
+    recount();
+    if (!editing) render();
+    if (!schedEditing) renderSched();
+    renderLive();
+  }, function () {});
+
+  // голоса
+  var loaded = false;
+  var timer = setTimeout(function () {
+    if (!loaded) note.textContent = 'Голоса пока не загрузились.';
+  }, 10000);
+  db.collection('votes').onSnapshot(function (snap) {
+    loaded = true;
+    clearTimeout(timer);
+    allVotes = snap.docs.map(function (d) { return { id: d.id, data: d.data() }; });
+    recount();
+    if (!editing) render();
+  }, function () {
+    clearTimeout(timer);
+    note.textContent = 'Голоса сейчас недоступны.';
+  });
+})();
+</script>
+
+</body></html>
